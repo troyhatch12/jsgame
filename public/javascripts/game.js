@@ -103,8 +103,8 @@ function drawGame() {
 * Loop through all the grid tiles on the screen and draw them according to the
 * camera's position on the map.
 */
-for (let gridY=0; gridY < tilesHigh + 2; gridY++) {
-  for (let gridX=0; gridX < tilesWide + 2; gridX++) {
+for (let gridY=0; gridY < tilesHigh + 1; gridY++) {
+  for (let gridX=0; gridX < tilesWide + 1; gridX++) {
       startTile = camera.getStartTile();
       debug.camera = `x: ${camera.x}, y: ${camera.y}, w: ${camera.w}, h: ${camera.h}`;
       debug.startTile = `x: ${startTile.x}, y: ${startTile.y}`;
@@ -123,19 +123,24 @@ for (let gridY=0; gridY < tilesHigh + 2; gridY++) {
       * Below, the call to the map array has the mapY coming before the mapX.
       * This is because of the way that the map array was defined.
       */
-      if (map[0][tile.mapY][tile.mapX] === 1) {
-        ctx.fillStyle = "red";
-      }
-      else {
-        ctx.fillStyle = "blue";
-      }
-      ctx.fillRect(tile.x, tile.y, tileSize.w, tileSize.h);
+      try{
 
-      //print the tile index on the tile
-      ctx.fillStyle = "black";
-      ctx.fillText(`${tile.mapX}, ${tile.mapY}`, tile.x, tile.y + tileSize.h);
-      // ctx.fillText(`i:${i},j:${j}`, tile.x, tile.y + 25);
+        if (map.chunks[0][tile.mapY][tile.mapX] === 1) {
+          ctx.fillStyle = "red";
+        }
+        else {
+          ctx.fillStyle = "blue";
+        }
+        ctx.fillRect(tile.x, tile.y, tileSize.w, tileSize.h);
 
+        //print the tile index on the tile
+        ctx.fillStyle = "black";
+        ctx.fillText(`${tile.mapX}, ${tile.mapY}`, tile.x, tile.y + tileSize.h);
+        // ctx.fillText(`i:${i},j:${j}`, tile.x, tile.y + 25);
+
+    } catch(err) {
+      debug.error = `There was an error ${err}, mapY: ${tile.mapY}`;
+    }
       //print debug messages
       // ctx.fillStyle = "#aaaaaa";
       // ctx.fillRect(6*tileSize.w, 7*tileSize.h, tileSize.w*2, tileSize.h);
